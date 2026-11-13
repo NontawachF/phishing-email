@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="เว็บไซต์สาธิตการสังเกตสัญญาณอีเมลฟิชชิงเบื้องต้นเพื่อการศึกษา">
+<meta name="theme-color" content="#101b35">
+<title>รู้ทันอีเมลอันตราย | Phishing Email Checker</title>
+<style>
+:root{--navy:#101b35;--blue:#1769e0;--red:#c93642;--green:#168653;--ink:#17233d;--muted:#63708a;--bg:#f3f6fb;--line:#dbe3ef}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+header{background:var(--navy);color:#fff;padding:18px max(5vw,20px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:700}.brand span{color:#70b7ff}
+nav{display:flex;gap:18px;flex-wrap:wrap}nav a{color:#dce8ff;text-decoration:none;font-size:14px}nav a:hover{text-decoration:underline}
+.hero{background:linear-gradient(120deg,#122449,#174f9a);color:#fff;padding:42px max(5vw,20px);display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,42px);line-height:1.25;margin:0 0 12px}.hero p{color:#d7e6ff;max-width:680px;margin:0}.shield{font-size:96px;text-align:center;filter:drop-shadow(0 8px 18px #07142b)}
+main{max-width:1050px;margin:30px auto;padding:0 18px}
+.card{background:#fff;border:1px solid #e7ecf4;border-radius:18px;padding:24px;box-shadow:0 8px 28px #17233d12;margin-bottom:22px}
+h2{margin:0 0 8px;font-size:23px}.hint{color:var(--muted);margin:0 0 14px}.field{display:block;font-weight:700;margin:14px 0 6px}
+input,textarea{width:100%;border:1px solid #cbd5e5;border-radius:12px;padding:13px;font:15px Tahoma,Arial;color:var(--ink);background:#fff}
+textarea{min-height:155px;resize:vertical}input:focus,textarea:focus{outline:3px solid #1769e033;border-color:var(--blue)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+button{border:0;border-radius:11px;background:var(--blue);color:#fff;padding:12px 20px;font-size:15px;font-weight:700;cursor:pointer}
+button:hover{filter:brightness(.94)}button:focus-visible{outline:3px solid #f2b84b;outline-offset:2px}
+button.secondary{background:#eaf2ff;color:#174f9a}button.ghost{background:#eef1f6;color:#34425d}
+.result{display:none;margin-top:20px;padding:18px;border-radius:13px;background:#f4f7fc;border:1px solid var(--line)}
+.result.low{border-color:#9bd4b7;background:#effaf4}.result.medium{border-color:#f2c58d;background:#fff9ef}.result.high{border-color:#efb2b6;background:#fff1f2}
+.score{font-size:28px;font-weight:800;line-height:1.2}.score-caption{font-size:13px;color:var(--muted);margin-top:3px}
+.tag{display:inline-block;border-radius:99px;padding:4px 11px;font-size:13px;font-weight:700;margin-top:9px}
+.low .tag{background:#d8f3e4;color:#11633d}.medium .tag{background:#ffebd5;color:#8a4b08}.high .tag{background:#ffe0e2;color:#a51e29}
+.result h3{margin:16px 0 6px;font-size:17px}.result ul{margin:6px 0;padding-left:22px}.result li{margin:4px 0}
+.points{font-weight:700;color:#33415e;white-space:nowrap}
+.disclaimer{border-left:4px solid #e0a12a;background:#fff8e9;padding:12px 15px;border-radius:8px;color:#694b13;font-size:13px;margin-top:15px}
+.privacy{background:#eef6ff;border:1px solid #cfe2ff;padding:12px 15px;border-radius:10px;font-size:13px;color:#21466f;margin-top:12px}
+.tips{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.tip{background:#f4f7fc;padding:15px;border-radius:12px}.tip b{display:block;margin-bottom:3px}
+.example-note{font-size:13px;color:var(--muted)}
+footer{text-align:center;color:var(--muted);padding:25px;font-size:13px}
+@media(max-width:700px){.hero{grid-template-columns:1fr}.shield{display:none}.tips{grid-template-columns:1fr}.card{padding:18px}nav{gap:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">🛡️ Phishing <span>Email Checker</span></div>
+  <nav aria-label="เมนูหลัก"><a href="#check">ทดลองตรวจสอบ</a><a href="#learn">วิธีสังเกต</a><a href="#response">วิธีรับมือ</a></nav>
+</header>
+<section class="hero">
+  <div><h1>รู้ทันอีเมลอันตราย<br>คิดก่อนคลิก ตรวจสอบก่อนให้ข้อมูล</h1><p>เว็บไซต์สาธิตเพื่อการศึกษา ช่วยชี้สัญญาณที่ควรระวังจากข้อความอีเมล ลิงก์ และชื่อไฟล์แนบ ด้วยกฎพื้นฐานที่อธิบายได้</p></div>
+  <div class="shield" aria-hidden="true">📧🛡️</div>
+</section>
+<main>
+  <section class="card" id="check">
+    <h2>🔎 ทดลองคัดกรองอีเมลเบื้องต้น</h2>
+    <p class="hint">ใส่เฉพาะข้อมูลตัวอย่างหรือข้อความที่ลบข้อมูลส่วนตัวแล้ว ไม่ต้องกรอกรหัสผ่าน OTP หรือข้อมูลจริง</p>
+    <label class="field" for="sender">ที่อยู่อีเมลผู้ส่ง (ถ้ามี)</label>
+    <input id="sender" type="text" autocomplete="off" spellcheck="false" placeholder="เช่น security@example.invalid">
+    <label class="field" for="subject">หัวข้ออีเมล (ถ้ามี)</label>
+    <input id="subject" type="text" placeholder="เช่น บัญชีของคุณจะถูกระงับ">
+    <label class="field" for="emailText">เนื้อหาอีเมล</label>
+    <textarea id="emailText" placeholder="วางข้อความอีเมลที่ต้องการตรวจสอบ โดยลบชื่อ เบอร์โทร เลขบัญชี และข้อมูลส่วนตัวออกก่อน"></textarea>
+    <label class="field" for="attachment">ชื่อไฟล์แนบ (ถ้ามี)</label>
+    <input id="attachment" type="text" autocomplete="off" placeholder="เช่น invoice.pdf หรือ document.exe">
+    <div class="actions">
+      <button class="secondary" id="suspiciousSample" type="button">ใส่ตัวอย่างน่าสงสัย</button>
+      <button class="secondary" id="generalSample" type="button">ใส่ตัวอย่างทั่วไป</button>
+      <button id="analyzeButton" type="button">เริ่มคัดกรอง</button>
+      <button class="ghost" id="clearButton" type="button">ล้างข้อมูล</button>
+    </div>
+    <div id="result" class="result" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div class="privacy"><b>ความเป็นส่วนตัว:</b> โค้ดหน้านี้ประมวลผลข้อมูลในเบราว์เซอร์และไม่ได้ส่งข้อความที่กรอกไปยังเซิร์ฟเวอร์หรือบันทึกลงฐานข้อมูล อย่างไรก็ตาม ควรหลีกเลี่ยงการวางข้อมูลส่วนบุคคลหรือข้อมูลลับจริง</div>
+    <div class="disclaimer"><b>ข้อจำกัดสำคัญ:</b> คะแนนเป็นแต้มจากกฎที่กำหนดเพื่อการสาธิต ไม่ใช่เปอร์เซ็นต์ความน่าจะเป็น ระบบไม่ตรวจสอบส่วนหัวอีเมลจริง (เช่น SPF/DKIM/DMARC) ไม่ตรวจสอบชื่อเสียงโดเมนหรือปลายทางแบบออนไลน์ ไม่สแกนไฟล์แนบ และไม่สามารถยืนยันว่าอีเมลปลอดภัยหรือเป็นอันตรายได้</div>
+  </section>
+
+  <section class="card" id="learn">
+    <h2>5 จุดสังเกตอีเมลที่ควรระวัง</h2>
+    <p class="hint">อย่าตัดสินจากสัญญาณเพียงข้อเดียว ให้ตรวจสอบบริบทและแหล่งที่มาประกอบ</p>
+    <div class="tips">
+      <div class="tip">👤 <b>1. ผู้ส่งผิดปกติ</b>ตรวจชื่อและโดเมนของอีเมลให้ตรงกับช่องทางทางการ อย่าดูเฉพาะชื่อที่แสดง</div>
+      <div class="tip">🔗 <b>2. ลิงก์น่าสงสัย</b>ระวังชื่อโดเมนสะกดเลียนแบบ ลิงก์ย่อ หรือ URL ที่ไม่คาดคิด อย่ากดเพื่อทดลอง</div>
+      <div class="tip">⏰ <b>3. เร่งรัดหรือข่มขู่</b>เช่น อ้างว่าจะระงับบัญชีหรือเสียสิทธิ์ หากไม่ดำเนินการทันที</div>
+      <div class="tip">📎 <b>4. ไฟล์แนบไม่คาดคิด</b>อย่าเปิดไฟล์ที่ไม่คาดว่าจะได้รับ โดยเฉพาะไฟล์โปรแกรม สคริปต์ หรือเอกสารที่เปิดใช้ Macro</div>
+      <div class="tip">🔐 <b>5. ขอข้อมูลลับ</b>อย่าเปิดเผยรหัสผ่าน OTP หรือข้อมูลทางการเงินผ่านอีเมลหรือลิงก์ที่ส่งมา</div>
+      <div class="tip">📝 <b>ข้อสังเกตเพิ่มเติม</b>คำผิดหรือรูปแบบแปลกอาจเป็นสัญญาณได้ แต่ไม่ใช่หลักฐานยืนยัน เพราะอีเมลจริงก็อาจมีคำผิดได้</div>
+    </div>
+  </section>
+
+  <section class="card" id="response">
+    <h2>หากพบอีเมลน่าสงสัย ควรทำอย่างไร?</h2>
+    <ul>
+      <li>อย่าคลิกลิงก์ อย่าดาวน์โหลดหรือเปิดไฟล์แนบ และอย่าตอบกลับพร้อมข้อมูลส่วนตัว</li>
+      <li>ตรวจสอบกับหน่วยงานผ่านแอป เบอร์โทร หรือเว็บไซต์ทางการที่ค้นหาด้วยตนเอง ไม่ใช้ข้อมูลติดต่อจากอีเมลนั้น</li>
+      <li>ห้ามเปิดเผยรหัสผ่านหรือ OTP หากเผลอกดลิงก์หรือกรอกข้อมูล ให้รีบเปลี่ยนรหัสผ่านจากเว็บไซต์หรือแอปทางการ และติดต่อหน่วยงานที่เกี่ยวข้อง</li>
+      <li>รายงานอีเมลว่าเป็น Spam/Phishing และแจ้งฝ่าย IT หรือผู้ดูแลระบบหากเป็นอีเมลขององค์กร</li>
+    </ul>
+    <p class="example-note">ตัวอย่างอีเมลในเว็บไซต์นี้เป็นข้อมูลสมมติ ใช้เพื่อการเรียนรู้เท่านั้น โดเมนที่ลงท้ายด้วย <code>.invalid</code> เป็นโดเมนตัวอย่างที่ไม่ควรใช้งานเป็นเว็บไซต์จริง</p>
+  </section>
+</main>
+<footer>โครงงานเพื่อการศึกษา | Phishing Email Awareness &amp; Detection</footer>
+<script>
+'use strict';
+
+const suspiciousRules = [
+  {id:'account-threat', pattern:/(?:บัญชี.{0,24}(?:ระงับ|ปิด|ล็อก)|(?:ระงับ|ปิด|ล็อก).{0,24}บัญชี)/i, points:3, label:'มีข้อความขู่ระงับ ปิด หรือล็อกบัญชี'},
+  {id:'credential-request', pattern:/(?:กรุณา|โปรด|คุณต้อง|จำเป็นต้อง|ให้คุณ|ขอให้คุณ)\s*(?:คลิก.{0,20})?(?:กรอก|ป้อน|ส่ง|แจ้ง|ยืนยัน|ระบุ).{0,30}(?:รหัสผ่าน|otp|รหัสใช้ครั้งเดียว)|(?:กรุณา|โปรด|คุณต้อง|จำเป็นต้อง|ให้คุณ|ขอให้คุณ).{0,30}(?:รหัสผ่าน|otp|รหัสใช้ครั้งเดียว).{0,15}(?:กรอก|ป้อน|ส่ง|แจ้ง|ยืนยัน|ระบุ)/i, points:4, label:'มีคำขอให้กรอกหรือส่งรหัสผ่าน/OTP'},
+  {id:'identity-request', pattern:/(?:กรุณา|โปรด|คุณต้อง|จำเป็นต้อง|ให้คุณ|ขอให้คุณ)(?!\s*(?:อย่า|ห้าม|ไม่ควร|ไม่ต้อง)).{0,30}(?:คลิกลิงก์|เปิดลิงก์|เข้าเว็บไซต์|กรอกข้อมูล).{0,25}(?:ยืนยันตัวตน|ยืนยันบัญชี|ตรวจสอบบัญชี)|(?:ยืนยันตัวตน|ยืนยันบัญชี|ตรวจสอบบัญชี).{0,25}(?:ผ่านลิงก์|คลิกลิงก์|กรอกข้อมูล|ทันที)/i, points:2, label:'มีคำขอให้ยืนยันบัญชีหรือตัวตน'},
+  {id:'urgency', pattern:/(?:ภายใน\s*(?:24|48)\s*(?:ชั่วโมง|ชม\.?))|(?:ด่วนที่สุด|ดำเนินการทันที|โดยเร็วที่สุด|ภายในวันนี้)/i, points:1, label:'มีถ้อยคำเร่งรัดให้ดำเนินการ'},
+  {id:'prize', pattern:/(?:รับรางวัล|ได้รับรางวัล|ถูกรางวัล|เครดิตฟรี|เงินรางวัล)/i, points:2, label:'มีการเสนอรางวัลหรือผลประโยชน์ที่ควรตรวจสอบ'},
+  {id:'payment', pattern:/(?:โอนเงินทันที|ชำระเงินทันที|เปลี่ยนบัญชีรับเงิน|ส่งหลักฐานการโอน)/i, points:2, label:'มีคำขอเกี่ยวกับการโอนหรือชำระเงิน'},
+];
+
+const shortenerHosts = new Set(['bit.ly','tinyurl.com','t.co','goo.gl','ow.ly','is.gd','cutt.ly','rebrand.ly','shorturl.at','buff.ly']);
+const riskyExtensions = /\.(?:exe|scr|js|jse|bat|cmd|com|pif|vbs|vbe|msi|ps1|hta|lnk|iso|dll|cpl|jar)$/i;
+const macroExtensions = /\.(?:docm|xlsm|pptm)$/i;
+
+function byId(id){ return document.getElementById(id); }
+function addFinding(findings, id, label, points){
+  if(!findings.some(item => item.id === id)) findings.push({id, label, points});
+}
+function cleanUrlToken(value){
+  return value.replace(/[.,;:!?\])}»”’]+$/g, '');
+}
+function inspectUrls(text, findings){
+  const matches = text.match(/(?:https?:\/\/|www\.)[^\s<>"']+/gi) || [];
+  const unique = [...new Set(matches.map(cleanUrlToken).filter(Boolean))].slice(0,5);
+  unique.forEach((raw, index) => {
+    const candidate = raw.toLowerCase().startsWith('www.') ? 'https://' + raw : raw;
+    let parsed;
+    try { parsed = new URL(candidate); }
+    catch { addFinding(findings, 'url-unparsed-' + index, 'พบข้อความลิงก์ที่ระบบแยกปลายทางไม่ได้ ควรหลีกเลี่ยงการเปิด', 0); return; }
+    const host = parsed.hostname.toLowerCase();
+    if(parsed.username || parsed.password){
+      addFinding(findings, 'url-userinfo-' + index, 'URL มีข้อมูลก่อนเครื่องหมาย @ ซึ่งอาจทำให้เข้าใจชื่อเว็บไซต์ผิด', 3);
+    }
+    if(/^\d{1,3}(?:\.\d{1,3}){3}$/.test(host)){
+      addFinding(findings, 'url-ip-' + index, 'ลิงก์ใช้หมายเลข IP แทนชื่อโดเมน ควรตรวจสอบอย่างระมัดระวัง', 3);
+    }
+    if(host.includes('xn--')){
+      addFinding(findings, 'url-punycode-' + index, 'พบชื่อโดเมนแบบ Punycode ซึ่งอาจใช้เลียนแบบตัวอักษร', 2);
+    }
+    if([...shortenerHosts].some(domain => host === domain || host.endsWith('.' + domain))){
+      addFinding(findings, 'url-shortener-' + index, 'พบลิงก์ย่อที่ซ่อนปลายทางจริง', 3);
+    }
+    if(parsed.protocol === 'http:'){
+      addFinding(findings, 'url-http-' + index, 'พบลิงก์ที่ไม่ได้ใช้ HTTPS แต่ HTTPS เพียงอย่างเดียวก็ไม่ได้รับประกันว่าเว็บไซต์ปลอดภัย', 1);
+    }
+    if(!findings.some(item => item.id.startsWith('url-') && item.id.endsWith('-' + index))){
+      addFinding(findings, 'url-general-' + index, 'พบ URL ควรตรวจสอบชื่อโดเมนและปลายทางด้วยช่องทางที่เชื่อถือได้', 0);
+    }
+  });
+}
+
+function loadSuspiciousSample(){
+  byId('sender').value = 'security@bank-example.invalid';
+  byId('subject').value = 'บัญชีของคุณกำลังจะถูกระงับ!';
+  byId('emailText').value = 'บัญชีของคุณจะถูกระงับภายใน 24 ชั่วโมง กรุณาคลิกลิงก์ด้านล่างเพื่อยืนยันรหัสผ่านและ OTP ทันที https://bank-login.example.invalid/verify';
+  byId('attachment').value = '';
+  byId('result').style.display = 'none';
+}
+function loadGeneralSample(){
+  byId('sender').value = 'newsletter@example.invalid';
+  byId('subject').value = 'จดหมายข่าวประจำเดือน';
+  byId('emailText').value = 'เรียนสมาชิก นี่คือจดหมายข่าวประจำเดือน โปรดจำไว้ว่าเจ้าหน้าที่จะไม่ขอรหัสผ่านหรือ OTP ผ่านอีเมล หากต้องการอ่านข่าวสารให้เปิดแอปหรือพิมพ์ที่อยู่เว็บไซต์ทางการด้วยตนเอง ขอบคุณที่ติดตามข่าวสาร';
+  byId('attachment').value = '';
+  byId('result').style.display = 'none';
+}
+function clearForm(){
+  ['sender','subject','emailText','attachment'].forEach(id => byId(id).value = '');
+  const box = byId('result');
+  box.replaceChildren(); box.className = 'result'; box.style.display = 'none';
+  byId('sender').focus();
+}
+
+function analyze(){
+  const sender = byId('sender').value.trim();
+  const subject = byId('subject').value.trim();
+  const body = byId('emailText').value.trim();
+  const attachment = byId('attachment').value.trim();
+  const box = byId('result');
+  if(!sender && !subject && !body && !attachment){
+    box.replaceChildren();
+    const message = document.createElement('p');
+    message.textContent = 'กรุณากรอกข้อมูลอย่างน้อยหนึ่งช่องก่อนเริ่มคัดกรอง';
+    box.appendChild(message); box.className = 'result medium'; box.style.display = 'block';
+    return;
+  }
+
+  const findings = [];
+  const textToCheck = subject + ' ' + body;
+  suspiciousRules.forEach(rule => {
+    if(rule.pattern.test(textToCheck)) addFinding(findings, rule.id, rule.label, rule.points);
+  });
+  inspectUrls(textToCheck, findings);
+
+  if(sender){
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sender)){
+      addFinding(findings, 'sender-format', 'รูปแบบที่อยู่อีเมลผู้ส่งไม่สมบูรณ์ ควรตรวจสอบอีกครั้ง', 1);
+    }
+    const parts = sender.toLowerCase().split('@');
+    if(parts.length === 2 && parts[1].includes('xn--')){
+      addFinding(findings, 'sender-punycode', 'โดเมนอีเมลผู้ส่งมีข้อความแบบ Punycode ควรตรวจสอบชื่อโดเมน', 2);
+    }
+    if(parts.length === 2 && /(?:bank|ธนาคาร|security|support|admin)/i.test(parts[0]) && /^(?:gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/.test(parts[1])){
+      addFinding(findings, 'sender-free-mail', 'ชื่อบัญชีสื่อถึงหน่วยงาน แต่ใช้ผู้ให้บริการอีเมลทั่วไป เป็นเพียงสัญญาณให้ตรวจสอบ ไม่ใช่หลักฐานว่าเป็นอีเมลปลอม', 1);
+    }
+  }
+
+  if(attachment){
+    const files = attachment.split(/[\n,;]+/).map(item => item.trim()).filter(Boolean);
+    files.forEach((filename, index) => {
+      if(riskyExtensions.test(filename)){
+        addFinding(findings, 'attachment-risky-' + index, 'ชื่อไฟล์แนบลงท้ายด้วยชนิดไฟล์ที่อาจรันโปรแกรมหรือสคริปต์ได้: ' + filename, 4);
+      } else if(macroExtensions.test(filename)){
+        addFinding(findings, 'attachment-macro-' + index, 'ไฟล์ Office อาจมี Macro ควรยืนยันแหล่งที่มาก่อนเปิด: ' + filename, 2);
+      } else {
+        addFinding(findings, 'attachment-general-' + index, 'มีการระบุไฟล์แนบ ควรยืนยันผู้ส่งและความจำเป็นก่อนเปิด: ' + filename, 0);
+      }
+    });
+  }
+
+  const rawScore = findings.reduce((sum, item) => sum + item.points, 0);
+  const score = Math.min(rawScore, 10);
+  let level, cls, advice;
+  if(score >= 7){
+    level = 'พบสัญญาณน่าสงสัยหลายข้อ'; cls = 'high';
+    advice = 'อย่าคลิกลิงก์หรือเปิดไฟล์แนบ ตรวจสอบกับหน่วยงานผ่านแอป เบอร์โทร หรือเว็บไซต์ทางการที่ค้นหาด้วยตนเอง';
+  } else if(score >= 3){
+    level = 'ควรตรวจสอบเพิ่มเติม'; cls = 'medium';
+    advice = 'หยุดก่อนดำเนินการ ตรวจสอบผู้ส่งและปลายทางผ่านช่องทางทางการ อย่าให้รหัสผ่านหรือ OTP';
+  } else {
+    level = 'ไม่พบสัญญาณเด่นชัดจากกฎที่ใช้'; cls = 'low';
+    advice = 'ผลนี้ไม่ได้แปลว่าอีเมลปลอดภัย ควรตรวจสอบผู้ส่งและปลายทางก่อนคลิกหรือเปิดไฟล์เสมอ';
+  }
+  if(findings.length === 0){
+    findings.push({id:'no-match', label:'ไม่พบรูปแบบที่ตรงกับกฎพื้นฐานที่ระบบกำหนด', points:0});
+  }
+
+  box.replaceChildren();
+  box.className = 'result ' + cls;
+  box.style.display = 'block';
+  const scoreEl = document.createElement('div'); scoreEl.className = 'score'; scoreEl.textContent = score + '/10'; box.appendChild(scoreEl);
+  const caption = document.createElement('div'); caption.className = 'score-caption'; caption.textContent = 'คะแนนสัญญาณจากกฎพื้นฐาน (จำกัดสูงสุด 10 แต้ม ไม่ใช่เปอร์เซ็นต์ความเสี่ยง)'; box.appendChild(caption);
+  const tag = document.createElement('span'); tag.className = 'tag'; tag.textContent = level; box.appendChild(tag);
+  const heading = document.createElement('h3'); heading.textContent = 'สิ่งที่ระบบสังเกตพบ'; box.appendChild(heading);
+  const list = document.createElement('ul');
+  findings.forEach(item => {
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(item.label + ' '));
+    const points = document.createElement('span'); points.className = 'points'; points.textContent = '(+' + item.points + ' แต้ม)';
+    li.appendChild(points); list.appendChild(li);
+  });
+  box.appendChild(list);
+  const adviceEl = document.createElement('p');
+  const strong = document.createElement('b'); strong.textContent = 'คำแนะนำ: ';
+  adviceEl.append(strong, document.createTextNode(advice)); box.appendChild(adviceEl);
+  const note = document.createElement('p'); note.className = 'example-note';
+  note.textContent = 'ผลนี้เป็นเพียงการคัดกรองจากข้อความและชื่อไฟล์ที่กรอก ไม่ได้ตรวจสอบตัวตนผู้ส่งจริง ส่วนหัวอีเมล DNS ชื่อเสียงเว็บไซต์ หรือเนื้อหาภายในไฟล์แนบ';
+  box.appendChild(note);
+}
+
+byId('suspiciousSample').addEventListener('click', loadSuspiciousSample);
+byId('generalSample').addEventListener('click', loadGeneralSample);
+byId('analyzeButton').addEventListener('click', analyze);
+byId('clearButton').addEventListener('click', clearForm);
+</script>
+</body>
+</html>
